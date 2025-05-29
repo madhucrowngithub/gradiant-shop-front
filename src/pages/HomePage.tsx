@@ -2,7 +2,8 @@
 import React from 'react';
 import { ArrowRight, Star, Truck, Shield, Clock, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import ProductCard from '../components/ProductCard';
+import ProductCarousel from '../components/ProductCarousel';
+import PreLaunchNotification from '../components/PreLaunchNotification';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -49,6 +50,71 @@ const HomePage = () => {
       rating: 4.7,
       reviews: 87,
       category: "Furniture"
+    },
+    {
+      id: 5,
+      name: "Gaming Mechanical Keyboard",
+      price: 159,
+      originalPrice: 199,
+      image: "photo-1486312338219-ce68d2c6f44d",
+      rating: 4.9,
+      reviews: 342,
+      category: "Gaming",
+      isSale: true
+    },
+    {
+      id: 6,
+      name: "4K Webcam Pro",
+      price: 89,
+      image: "photo-1526374965328-7f61d4dc18c5",
+      rating: 4.4,
+      reviews: 156,
+      category: "Electronics",
+      isNew: true
+    }
+  ];
+
+  const featuredProducts = [
+    {
+      id: 7,
+      name: "Smart Home Hub",
+      price: 249,
+      originalPrice: 299,
+      image: "photo-1581091226825-a6a2a5aee158",
+      rating: 4.6,
+      reviews: 89,
+      category: "Smart Home",
+      isSale: true
+    },
+    {
+      id: 8,
+      name: "Wireless Charging Pad",
+      price: 49,
+      image: "photo-1649972904349-6e44c42644a7",
+      rating: 4.3,
+      reviews: 234,
+      category: "Accessories"
+    },
+    {
+      id: 9,
+      name: "Bluetooth Speaker",
+      price: 79,
+      originalPrice: 99,
+      image: "photo-1488590528505-98d2b5aba04b",
+      rating: 4.7,
+      reviews: 167,
+      category: "Audio",
+      isSale: true
+    },
+    {
+      id: 10,
+      name: "Smart Light Bulbs (4-Pack)",
+      price: 69,
+      image: "photo-1531297484001-80022131f5a1",
+      rating: 4.5,
+      reviews: 203,
+      category: "Smart Home",
+      isNew: true
     }
   ];
 
@@ -61,12 +127,20 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
+      {/* Hero Section with Enhanced Background Animation */}
       <section className="relative gradient-bg text-white py-20 overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-red-900/30"></div>
+          {/* Multiple animated background elements */}
           <div className="absolute top-20 left-20 w-72 h-72 bg-red-500/20 rounded-full blur-3xl animate-float"></div>
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-red-700/10 rounded-full blur-3xl animate-float"></div>
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-red-700/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-red-600/15 rounded-full blur-2xl animate-float" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute bottom-1/3 left-10 w-48 h-48 bg-red-400/10 rounded-full blur-xl animate-float" style={{ animationDelay: '0.5s' }}></div>
+          
+          {/* Floating particles */}
+          <div className="absolute top-1/4 right-1/4 w-4 h-4 bg-red-500/40 rounded-full animate-bounce" style={{ animationDelay: '0.5s' }}></div>
+          <div className="absolute top-3/4 left-1/4 w-3 h-3 bg-red-400/60 rounded-full animate-bounce" style={{ animationDelay: '1.5s' }}></div>
+          <div className="absolute top-1/2 right-1/3 w-2 h-2 bg-red-600/80 rounded-full animate-bounce" style={{ animationDelay: '2.5s' }}></div>
         </div>
         <div className="relative container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
@@ -130,25 +204,12 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Trending Products */}
+      {/* Trending Products Carousel */}
       <section className="py-16 bg-black">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4 gradient-text animate-bounce-in">
-              Trending Products
-            </h2>
-            <p className="text-gray-400 text-lg">Discover what's popular this week</p>
-          </div>
+          <ProductCarousel products={trendingProducts} title="Trending Products" />
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {trendingProducts.map((product, index) => (
-              <div key={product.id} style={{ animationDelay: `${index * 0.1}s` }}>
-                <ProductCard product={product} />
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center">
+          <div className="text-center mt-8">
             <button 
               onClick={() => navigate('/marketplace')}
               className="btn-primary"
@@ -156,6 +217,16 @@ const HomePage = () => {
               View All Products
             </button>
           </div>
+        </div>
+      </section>
+
+      {/* Pre-Launch Notification Section */}
+      <PreLaunchNotification />
+
+      {/* Featured Products Carousel */}
+      <section className="py-16 bg-gray-900">
+        <div className="container mx-auto px-4">
+          <ProductCarousel products={featuredProducts} title="Featured Collection" />
         </div>
       </section>
 

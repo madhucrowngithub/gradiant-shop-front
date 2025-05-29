@@ -1,243 +1,281 @@
 
 import React, { useState } from 'react';
-import { User, Package, Heart, Settings, Edit, MapPin, Phone, Mail } from 'lucide-react';
+import { User, Package, Heart, Settings, MapPin, Phone, Mail, Edit, Camera } from 'lucide-react';
 
 const Profile = () => {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState('profile');
   const [isEditing, setIsEditing] = useState(false);
 
-  const user = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "+1 (555) 123-4567",
-    address: "123 Main St, New York, NY 10001",
-    avatar: "JD",
-    memberSince: "January 2023",
-    totalOrders: 24,
-    totalSpent: 3250
-  };
+  const tabs = [
+    { id: 'profile', label: 'Profile', icon: User },
+    { id: 'orders', label: 'Orders', icon: Package },
+    { id: 'wishlist', label: 'Wishlist', icon: Heart },
+    { id: 'settings', label: 'Settings', icon: Settings }
+  ];
 
-  const recentOrders = [
+  const orders = [
     {
-      id: "ORD-001",
-      date: "2024-01-15",
-      total: 299,
-      status: "Delivered",
-      items: 2
+      id: '12345',
+      date: '2024-01-15',
+      status: 'Delivered',
+      total: 299.99,
+      items: ['Premium Wireless Headphones', 'Phone Case']
     },
     {
-      id: "ORD-002",
-      date: "2024-01-10",
-      total: 159,
-      status: "Shipped",
-      items: 1
-    },
-    {
-      id: "ORD-003",
-      date: "2024-01-05",
-      total: 89,
-      status: "Processing",
-      items: 1
+      id: '12344',
+      date: '2024-01-10',
+      status: 'Shipped',
+      total: 89.99,
+      items: ['Laptop Stand']
     }
   ];
 
   const wishlistItems = [
     {
       id: 1,
-      name: "Smart Home Speaker",
-      price: 199,
-      image: "photo-1488590528505-98d2b5aba04b"
+      name: 'Smart Watch Pro',
+      price: 399,
+      image: 'photo-1649972904349-6e44c42644a7'
     },
     {
       id: 2,
-      name: "Wireless Charging Pad",
-      price: 49,
-      image: "photo-1649972904349-6e44c42644a7"
+      name: 'Gaming Keyboard',
+      price: 129,
+      image: 'photo-1486312338219-ce68d2c6f44d'
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black text-white">
+      {/* Header */}
+      <div className="gradient-bg py-12">
+        <div className="container mx-auto px-4">
+          <h1 className="text-4xl font-bold gradient-text animate-bounce-in">My Account</h1>
+          <p className="text-gray-300 mt-2">Manage your profile and preferences</p>
+        </div>
+      </div>
+
       <div className="container mx-auto px-4 py-8">
-        <div className="max-w-6xl mx-auto">
-          {/* Profile Header */}
-          <div className="bg-white rounded-xl shadow-md p-8 mb-8">
-            <div className="flex items-center space-x-6">
-              <div className="w-24 h-24 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
-                {user.avatar}
-              </div>
-              <div className="flex-1">
-                <h1 className="text-3xl font-bold text-gray-800">{user.name}</h1>
-                <p className="text-gray-600 mb-2">Member since {user.memberSince}</p>
-                <div className="flex items-center space-x-4 text-sm text-gray-500">
-                  <span>{user.totalOrders} Orders</span>
-                  <span>•</span>
-                  <span>${user.totalSpent} Total Spent</span>
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Sidebar */}
+          <div className="lg:col-span-1">
+            <div className="bg-gray-900 rounded-xl border border-red-500/20 p-6 animate-fade-in">
+              <div className="text-center mb-6">
+                <div className="relative inline-block">
+                  <div className="w-20 h-20 bg-gradient-to-r from-red-600 to-red-700 rounded-full flex items-center justify-center text-2xl font-bold text-white mb-4">
+                    JD
+                  </div>
+                  <button className="absolute bottom-0 right-0 bg-red-600 rounded-full p-1 hover:bg-red-700 transition-colors">
+                    <Camera className="h-4 w-4" />
+                  </button>
                 </div>
+                <h3 className="font-semibold text-white">John Doe</h3>
+                <p className="text-gray-400 text-sm">john.doe@email.com</p>
               </div>
-              <button 
-                onClick={() => setIsEditing(!isEditing)}
-                className="flex items-center space-x-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity"
-              >
-                <Edit className="h-4 w-4" />
-                <span>Edit Profile</span>
-              </button>
+              
+              <nav className="space-y-2">
+                {tabs.map((tab) => {
+                  const Icon = tab.icon;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all ${
+                        activeTab === tab.id
+                          ? 'bg-red-600 text-white'
+                          : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                      }`}
+                    >
+                      <Icon className="h-5 w-5" />
+                      <span>{tab.label}</span>
+                    </button>
+                  );
+                })}
+              </nav>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            {/* Sidebar */}
-            <div className="lg:col-span-1">
-              <div className="bg-white rounded-xl shadow-md overflow-hidden">
-                <nav className="p-2">
-                  {[
-                    { id: 'overview', label: 'Overview', icon: User },
-                    { id: 'orders', label: 'Orders', icon: Package },
-                    { id: 'wishlist', label: 'Wishlist', icon: Heart },
-                    { id: 'settings', label: 'Settings', icon: Settings }
-                  ].map((item) => (
+          {/* Content */}
+          <div className="lg:col-span-3">
+            <div className="bg-gray-900 rounded-xl border border-red-500/20 p-6 animate-slide-up">
+              {activeTab === 'profile' && (
+                <div>
+                  <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-2xl font-bold gradient-text">Personal Information</h2>
                     <button
-                      key={item.id}
-                      onClick={() => setActiveTab(item.id)}
-                      className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                        activeTab === item.id 
-                          ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white' 
-                          : 'text-gray-600 hover:bg-gray-50'
-                      }`}
+                      onClick={() => setIsEditing(!isEditing)}
+                      className="btn-secondary flex items-center space-x-2"
                     >
-                      <item.icon className="h-5 w-5" />
-                      <span>{item.label}</span>
+                      <Edit className="h-4 w-4" />
+                      <span>{isEditing ? 'Cancel' : 'Edit'}</span>
                     </button>
-                  ))}
-                </nav>
-              </div>
-            </div>
+                  </div>
 
-            {/* Main Content */}
-            <div className="lg:col-span-3">
-              <div className="bg-white rounded-xl shadow-md p-8">
-                {activeTab === 'overview' && (
-                  <div>
-                    <h2 className="text-2xl font-bold mb-6">Profile Overview</h2>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                      <div className="bg-gradient-to-r from-purple-100 to-blue-100 p-6 rounded-xl">
-                        <h3 className="font-semibold text-lg mb-2">Total Orders</h3>
-                        <p className="text-3xl font-bold text-purple-600">{user.totalOrders}</p>
-                      </div>
-                      <div className="bg-gradient-to-r from-blue-100 to-indigo-100 p-6 rounded-xl">
-                        <h3 className="font-semibold text-lg mb-2">Total Spent</h3>
-                        <p className="text-3xl font-bold text-blue-600">${user.totalSpent}</p>
-                      </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-gray-400 mb-2">First Name</label>
+                      <input
+                        type="text"
+                        value="John"
+                        disabled={!isEditing}
+                        className="w-full bg-black border border-red-500/30 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50"
+                      />
                     </div>
-
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold">Contact Information</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="flex items-center space-x-3">
-                          <Mail className="h-5 w-5 text-gray-400" />
-                          <span>{user.email}</span>
-                        </div>
-                        <div className="flex items-center space-x-3">
-                          <Phone className="h-5 w-5 text-gray-400" />
-                          <span>{user.phone}</span>
-                        </div>
-                        <div className="flex items-center space-x-3 md:col-span-2">
-                          <MapPin className="h-5 w-5 text-gray-400" />
-                          <span>{user.address}</span>
-                        </div>
-                      </div>
+                    <div>
+                      <label className="block text-gray-400 mb-2">Last Name</label>
+                      <input
+                        type="text"
+                        value="Doe"
+                        disabled={!isEditing}
+                        className="w-full bg-black border border-red-500/30 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-gray-400 mb-2">Email</label>
+                      <input
+                        type="email"
+                        value="john.doe@email.com"
+                        disabled={!isEditing}
+                        className="w-full bg-black border border-red-500/30 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-gray-400 mb-2">Phone</label>
+                      <input
+                        type="tel"
+                        value="+1 (555) 123-4567"
+                        disabled={!isEditing}
+                        className="w-full bg-black border border-red-500/30 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50"
+                      />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-gray-400 mb-2">Address</label>
+                      <textarea
+                        value="123 Main Street, City, State 12345"
+                        disabled={!isEditing}
+                        rows={3}
+                        className="w-full bg-black border border-red-500/30 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50"
+                      />
                     </div>
                   </div>
-                )}
 
-                {activeTab === 'orders' && (
-                  <div>
-                    <h2 className="text-2xl font-bold mb-6">Order History</h2>
-                    <div className="space-y-4">
-                      {recentOrders.map((order) => (
-                        <div key={order.id} className="border border-gray-200 rounded-lg p-4 flex items-center justify-between">
+                  {isEditing && (
+                    <div className="mt-6 flex space-x-4">
+                      <button className="btn-primary">Save Changes</button>
+                      <button
+                        onClick={() => setIsEditing(false)}
+                        className="btn-secondary"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {activeTab === 'orders' && (
+                <div>
+                  <h2 className="text-2xl font-bold gradient-text mb-6">Order History</h2>
+                  <div className="space-y-4">
+                    {orders.map((order) => (
+                      <div key={order.id} className="bg-black p-6 rounded-lg border border-red-500/20">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
                           <div>
-                            <p className="font-semibold">{order.id}</p>
-                            <p className="text-sm text-gray-600">{order.date} • {order.items} items</p>
+                            <h3 className="font-semibold text-white">Order #{order.id}</h3>
+                            <p className="text-gray-400 text-sm">{order.date}</p>
                           </div>
                           <div className="text-right">
-                            <p className="font-semibold">${order.total}</p>
-                            <span className={`inline-block px-2 py-1 rounded-full text-xs ${
-                              order.status === 'Delivered' ? 'bg-green-100 text-green-800' :
-                              order.status === 'Shipped' ? 'bg-blue-100 text-blue-800' :
-                              'bg-yellow-100 text-yellow-800'
+                            <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                              order.status === 'Delivered' 
+                                ? 'bg-green-600 text-white' 
+                                : 'bg-blue-600 text-white'
                             }`}>
                               {order.status}
                             </span>
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {activeTab === 'wishlist' && (
-                  <div>
-                    <h2 className="text-2xl font-bold mb-6">Wishlist</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {wishlistItems.map((item) => (
-                        <div key={item.id} className="border border-gray-200 rounded-lg p-4">
-                          <img
-                            src={`https://images.unsplash.com/${item.image}?w=200&h=150&fit=crop`}
-                            alt={item.name}
-                            className="w-full h-32 object-cover rounded-lg mb-4"
-                          />
-                          <h3 className="font-semibold mb-2">{item.name}</h3>
-                          <p className="text-lg font-bold text-purple-600 mb-4">${item.price}</p>
-                          <button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 rounded-lg hover:opacity-90 transition-opacity">
-                            Add to Cart
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {activeTab === 'settings' && (
-                  <div>
-                    <h2 className="text-2xl font-bold mb-6">Account Settings</h2>
-                    <div className="space-y-6">
-                      <div>
-                        <h3 className="text-lg font-semibold mb-4">Notifications</h3>
-                        <div className="space-y-3">
-                          <label className="flex items-center">
-                            <input type="checkbox" className="mr-3" defaultChecked />
-                            <span>Email notifications for order updates</span>
-                          </label>
-                          <label className="flex items-center">
-                            <input type="checkbox" className="mr-3" defaultChecked />
-                            <span>SMS notifications for shipping</span>
-                          </label>
-                          <label className="flex items-center">
-                            <input type="checkbox" className="mr-3" />
-                            <span>Marketing emails</span>
-                          </label>
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <p className="text-gray-400 text-sm mb-1">Items:</p>
+                            <p className="text-white">{order.items.join(', ')}</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-gray-400 text-sm">Total</p>
+                            <p className="text-xl font-bold gradient-text">${order.total}</p>
+                          </div>
                         </div>
                       </div>
-                      
-                      <div>
-                        <h3 className="text-lg font-semibold mb-4">Privacy</h3>
-                        <div className="space-y-3">
-                          <label className="flex items-center">
-                            <input type="checkbox" className="mr-3" defaultChecked />
-                            <span>Make profile public</span>
-                          </label>
-                          <label className="flex items-center">
-                            <input type="checkbox" className="mr-3" defaultChecked />
-                            <span>Allow data collection for recommendations</span>
-                          </label>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'wishlist' && (
+                <div>
+                  <h2 className="text-2xl font-bold gradient-text mb-6">My Wishlist</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {wishlistItems.map((item) => (
+                      <div key={item.id} className="bg-black rounded-lg border border-red-500/20 overflow-hidden card-hover">
+                        <img
+                          src={`https://images.unsplash.com/${item.image}?w=300&h=200&fit=crop`}
+                          alt={item.name}
+                          className="w-full h-40 object-cover"
+                        />
+                        <div className="p-4">
+                          <h3 className="font-semibold text-white mb-2">{item.name}</h3>
+                          <p className="text-red-400 font-bold text-lg mb-3">${item.price}</p>
+                          <div className="flex space-x-2">
+                            <button className="btn-primary flex-1 text-sm">Add to Cart</button>
+                            <button className="btn-secondary text-sm">Remove</button>
+                          </div>
                         </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'settings' && (
+                <div>
+                  <h2 className="text-2xl font-bold gradient-text mb-6">Account Settings</h2>
+                  <div className="space-y-6">
+                    <div className="bg-black p-6 rounded-lg border border-red-500/20">
+                      <h3 className="font-semibold text-white mb-4">Notifications</h3>
+                      <div className="space-y-4">
+                        <label className="flex items-center justify-between">
+                          <span className="text-gray-300">Email notifications</span>
+                          <input type="checkbox" defaultChecked className="toggle" />
+                        </label>
+                        <label className="flex items-center justify-between">
+                          <span className="text-gray-300">SMS notifications</span>
+                          <input type="checkbox" className="toggle" />
+                        </label>
+                        <label className="flex items-center justify-between">
+                          <span className="text-gray-300">Push notifications</span>
+                          <input type="checkbox" defaultChecked className="toggle" />
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="bg-black p-6 rounded-lg border border-red-500/20">
+                      <h3 className="font-semibold text-white mb-4">Security</h3>
+                      <div className="space-y-4">
+                        <button className="btn-secondary w-full text-left">Change Password</button>
+                        <button className="btn-secondary w-full text-left">Enable Two-Factor Authentication</button>
+                        <button className="btn-secondary w-full text-left">Download My Data</button>
+                      </div>
+                    </div>
+
+                    <div className="bg-black p-6 rounded-lg border border-red-500/20">
+                      <h3 className="font-semibold text-white mb-4">Account Actions</h3>
+                      <div className="space-y-4">
+                        <button className="text-red-500 hover:text-red-400 transition-colors">Deactivate Account</button>
+                        <button className="text-red-500 hover:text-red-400 transition-colors">Delete Account</button>
                       </div>
                     </div>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
