@@ -62,26 +62,30 @@ const HomePage = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 text-white py-20">
-        <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+      <section className="relative gradient-bg text-white py-20 overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-red-900/30"></div>
+          <div className="absolute top-20 left-20 w-72 h-72 bg-red-500/20 rounded-full blur-3xl animate-float"></div>
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-red-700/10 rounded-full blur-3xl animate-float"></div>
+        </div>
         <div className="relative container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
-              Shop the Future
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-bounce-in">
+              Shop the <span className="gradient-text">Future</span>
             </h1>
-            <p className="text-xl md:text-2xl mb-8 opacity-90">
+            <p className="text-xl md:text-2xl mb-8 opacity-90 animate-fade-in">
               Discover amazing products with unbeatable prices and lightning-fast delivery
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up">
               <button 
                 onClick={() => navigate('/marketplace')}
-                className="bg-white text-purple-600 px-8 py-4 rounded-xl font-semibold hover:shadow-xl transition-all duration-300 hover:scale-105"
+                className="btn-primary"
               >
                 Shop Now <ArrowRight className="inline ml-2 h-5 w-5" />
               </button>
               <button 
-                onClick={() => navigate('/offers')}
-                className="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-purple-600 transition-all duration-300"
+                onClick={() => navigate('/marketplace')}
+                className="btn-secondary"
               >
                 View Offers
               </button>
@@ -91,61 +95,63 @@ const HomePage = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="bg-gradient-to-r from-purple-600 to-blue-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="text-center group animate-fade-in">
+              <div className="bg-gradient-to-r from-red-600 to-red-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform animate-pulse-glow">
                 <Truck className="h-8 w-8 text-white" />
               </div>
-              <h3 className="font-semibold text-lg mb-2">Free Shipping</h3>
-              <p className="text-gray-600">On orders over $50</p>
+              <h3 className="font-semibold text-lg mb-2 text-white">Free Shipping</h3>
+              <p className="text-gray-400">On orders over $50</p>
             </div>
-            <div className="text-center">
-              <div className="bg-gradient-to-r from-purple-600 to-blue-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="text-center group animate-fade-in">
+              <div className="bg-gradient-to-r from-red-600 to-red-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform animate-pulse-glow">
                 <Shield className="h-8 w-8 text-white" />
               </div>
-              <h3 className="font-semibold text-lg mb-2">30-Day Returns</h3>
-              <p className="text-gray-600">Hassle-free returns</p>
+              <h3 className="font-semibold text-lg mb-2 text-white">30-Day Returns</h3>
+              <p className="text-gray-400">Hassle-free returns</p>
             </div>
-            <div className="text-center">
-              <div className="bg-gradient-to-r from-purple-600 to-blue-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="text-center group animate-fade-in">
+              <div className="bg-gradient-to-r from-red-600 to-red-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform animate-pulse-glow">
                 <Clock className="h-8 w-8 text-white" />
               </div>
-              <h3 className="font-semibold text-lg mb-2">Fast Delivery</h3>
-              <p className="text-gray-600">Same-day delivery available</p>
+              <h3 className="font-semibold text-lg mb-2 text-white">Fast Delivery</h3>
+              <p className="text-gray-400">Same-day delivery available</p>
             </div>
-            <div className="text-center">
-              <div className="bg-gradient-to-r from-purple-600 to-blue-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="text-center group animate-fade-in">
+              <div className="bg-gradient-to-r from-red-600 to-red-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform animate-pulse-glow">
                 <Users className="h-8 w-8 text-white" />
               </div>
-              <h3 className="font-semibold text-lg mb-2">24/7 Support</h3>
-              <p className="text-gray-600">We're here to help</p>
+              <h3 className="font-semibold text-lg mb-2 text-white">24/7 Support</h3>
+              <p className="text-gray-400">We're here to help</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Trending Products */}
-      <section className="py-16">
+      <section className="py-16 bg-black">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+            <h2 className="text-4xl font-bold mb-4 gradient-text animate-bounce-in">
               Trending Products
             </h2>
-            <p className="text-gray-600 text-lg">Discover what's popular this week</p>
+            <p className="text-gray-400 text-lg">Discover what's popular this week</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {trendingProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+            {trendingProducts.map((product, index) => (
+              <div key={product.id} style={{ animationDelay: `${index * 0.1}s` }}>
+                <ProductCard product={product} />
+              </div>
             ))}
           </div>
 
           <div className="text-center">
             <button 
               onClick={() => navigate('/marketplace')}
-              className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-3 rounded-lg hover:opacity-90 transition-opacity"
+              className="btn-primary"
             >
               View All Products
             </button>
@@ -154,32 +160,33 @@ const HomePage = () => {
       </section>
 
       {/* Offer Section */}
-      <section className="py-16 bg-gradient-to-r from-purple-100 to-blue-100">
+      <section className="py-16 bg-gradient-to-br from-gray-900 via-black to-red-950">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+            <h2 className="text-4xl font-bold mb-4 gradient-text animate-bounce-in">
               Special Offers
             </h2>
-            <p className="text-gray-600 text-lg">Limited time deals you can't miss</p>
+            <p className="text-gray-400 text-lg">Limited time deals you can't miss</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {offerCategories.map((category, index) => (
               <div 
                 key={index}
-                className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer group"
+                className="bg-gray-900 rounded-xl shadow-xl card-hover overflow-hidden cursor-pointer group border border-red-500/20 animate-fade-in"
                 onClick={() => navigate('/marketplace')}
+                style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="relative">
                   <img 
                     src={`https://images.unsplash.com/${category.image}?w=400&h=200&fit=crop`}
                     alt={category.name}
-                    className="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                   <div className="absolute bottom-2 left-2 text-white">
                     <h3 className="font-semibold">{category.name}</h3>
-                    <p className="text-sm">{category.discount}</p>
+                    <p className="text-sm text-red-400">{category.discount}</p>
                   </div>
                 </div>
               </div>
@@ -189,31 +196,35 @@ const HomePage = () => {
       </section>
 
       {/* Customer Reviews */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+            <h2 className="text-4xl font-bold mb-4 gradient-text animate-bounce-in">
               What Our Customers Say
             </h2>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((review) => (
-              <div key={review} className="bg-gray-50 p-6 rounded-xl">
+            {[1, 2, 3].map((review, index) => (
+              <div 
+                key={review} 
+                className="bg-black p-6 rounded-xl border border-red-500/20 card-hover animate-fade-in"
+                style={{ animationDelay: `${index * 0.2}s` }}
+              >
                 <div className="flex items-center mb-4">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <p className="text-gray-600 mb-4">
+                <p className="text-gray-400 mb-4">
                   "Amazing quality and fast shipping! I'm extremely satisfied with my purchase."
                 </p>
                 <div className="flex items-center">
-                  <div className="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
+                  <div className="w-10 h-10 bg-gradient-to-r from-red-600 to-red-700 rounded-full flex items-center justify-center text-white font-semibold">
                     J
                   </div>
                   <div className="ml-3">
-                    <p className="font-semibold">John Doe</p>
+                    <p className="font-semibold text-white">John Doe</p>
                     <p className="text-sm text-gray-500">Verified Buyer</p>
                   </div>
                 </div>
