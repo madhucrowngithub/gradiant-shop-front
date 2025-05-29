@@ -7,7 +7,7 @@ import WhatsAppWidget from './WhatsAppWidget';
 
 const Layout = () => {
   return (
-    <div className="min-h-screen gradient-bg">
+    <div className="min-h-screen bg-white">
       <Header />
       <main>
         <Outlet />
