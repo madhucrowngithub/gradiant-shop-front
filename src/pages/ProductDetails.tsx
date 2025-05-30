@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Star, Heart, Share2, ShoppingCart, Truck, Shield, RotateCcw, Plus, Minus } from 'lucide-react';
@@ -11,6 +10,8 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
   const [activeTab, setActiveTab] = useState('description');
+  const [reviewText, setReviewText] = useState('');
+  const [reviewRating, setReviewRating] = useState(5);
 
   const product = {
     id: parseInt(id || '1'),
@@ -80,24 +81,33 @@ const ProductDetails = () => {
     }
   };
 
+  const handleSubmitReview = () => {
+    if (reviewText.trim()) {
+      console.log('Review submitted:', { rating: reviewRating, comment: reviewText });
+      setReviewText('');
+      setReviewRating(5);
+      alert('Thank you for your review!');
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-gradient-to-br from-white via-red-50 to-red-100">
       <div className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <nav className="mb-8 animate-fade-in">
-          <div className="flex items-center space-x-2 text-sm text-gray-400">
-            <button onClick={() => navigate('/')} className="hover:text-red-500 transition-colors">Home</button>
+          <div className="flex items-center space-x-2 text-sm text-gray-600">
+            <button onClick={() => navigate('/')} className="hover:text-red-600 transition-colors">Home</button>
             <span>/</span>
-            <button onClick={() => navigate('/marketplace')} className="hover:text-red-500 transition-colors">Electronics</button>
+            <button onClick={() => navigate('/marketplace')} className="hover:text-red-600 transition-colors">Electronics</button>
             <span>/</span>
-            <span className="text-white">{product.name}</span>
+            <span className="text-red-600 font-medium">{product.name}</span>
           </div>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
           {/* Product Images */}
           <div className="space-y-4 animate-fade-in">
-            <div className="aspect-square bg-gray-900 rounded-xl overflow-hidden border border-red-500/20">
+            <div className="aspect-square bg-white rounded-xl overflow-hidden border-2 border-red-200 shadow-lg">
               <img
                 src={product.images[selectedImage]}
                 alt={product.name}
@@ -109,8 +119,8 @@ const ProductDetails = () => {
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}
-                  className={`aspect-square bg-gray-900 rounded-lg overflow-hidden border-2 transition-all ${
-                    selectedImage === index ? 'border-red-500' : 'border-red-500/20 hover:border-red-500/50'
+                  className={`aspect-square bg-white rounded-lg overflow-hidden border-2 transition-all ${
+                    selectedImage === index ? 'border-red-500' : 'border-red-200 hover:border-red-400'
                   }`}
                 >
                   <img src={image} alt={`View ${index + 1}`} className="w-full h-full object-cover" />
@@ -122,7 +132,7 @@ const ProductDetails = () => {
           {/* Product Info */}
           <div className="space-y-6 animate-slide-up">
             <div>
-              <p className="text-red-400 text-sm mb-2">{product.category} • {product.brand}</p>
+              <p className="text-red-600 text-sm mb-2 font-medium">{product.category} • {product.brand}</p>
               <h1 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">{product.name}</h1>
               
               {/* Rating */}
@@ -134,18 +144,18 @@ const ProductDetails = () => {
                       className={`h-5 w-5 ${
                         i < Math.floor(product.rating) 
                           ? 'text-yellow-400 fill-current' 
-                          : 'text-gray-600'
+                          : 'text-gray-300'
                       }`} 
                     />
                   ))}
                 </div>
-                <span className="ml-2 text-white font-semibold">{product.rating}</span>
-                <span className="ml-2 text-gray-400">({product.reviews} reviews)</span>
+                <span className="ml-2 text-gray-900 font-semibold">{product.rating}</span>
+                <span className="ml-2 text-gray-600">({product.reviews} reviews)</span>
               </div>
 
               {/* Price */}
               <div className="flex items-center space-x-4 mb-6">
-                <span className="text-3xl font-bold text-white">${product.price}</span>
+                <span className="text-3xl font-bold text-gray-900">${product.price}</span>
                 <span className="text-xl text-gray-500 line-through">${product.originalPrice}</span>
                 <span className="bg-red-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
                   Save ${product.originalPrice - product.price}
@@ -155,18 +165,18 @@ const ProductDetails = () => {
 
             {/* Quantity Selector */}
             <div className="flex items-center space-x-4">
-              <span className="text-white font-semibold">Quantity:</span>
-              <div className="flex items-center border border-red-500/30 rounded-lg">
+              <span className="text-gray-900 font-semibold">Quantity:</span>
+              <div className="flex items-center border border-red-300 rounded-lg">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="p-2 hover:bg-red-600 transition-colors"
+                  className="p-2 hover:bg-red-100 transition-colors"
                 >
                   <Minus className="h-4 w-4" />
                 </button>
-                <span className="px-4 py-2 text-white font-semibold">{quantity}</span>
+                <span className="px-4 py-2 text-gray-900 font-semibold">{quantity}</span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="p-2 hover:bg-red-600 transition-colors"
+                  className="p-2 hover:bg-red-100 transition-colors"
                 >
                   <Plus className="h-4 w-4" />
                 </button>
@@ -192,26 +202,26 @@ const ProductDetails = () => {
             </div>
 
             {/* Features */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 py-6 border-t border-b border-red-500/20">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 py-6 border-t border-b border-red-200">
               <div className="flex items-center space-x-3">
-                <Truck className="h-6 w-6 text-red-500" />
+                <Truck className="h-6 w-6 text-red-600" />
                 <div>
-                  <p className="font-semibold text-white">Free Shipping</p>
-                  <p className="text-sm text-gray-400">On orders over $50</p>
+                  <p className="font-semibold text-gray-900">Free Shipping</p>
+                  <p className="text-sm text-gray-600">On orders over $50</p>
                 </div>
               </div>
               <div className="flex items-center space-x-3">
-                <RotateCcw className="h-6 w-6 text-red-500" />
+                <RotateCcw className="h-6 w-6 text-red-600" />
                 <div>
-                  <p className="font-semibold text-white">30-Day Returns</p>
-                  <p className="text-sm text-gray-400">Hassle-free returns</p>
+                  <p className="font-semibold text-gray-900">30-Day Returns</p>
+                  <p className="text-sm text-gray-600">Hassle-free returns</p>
                 </div>
               </div>
               <div className="flex items-center space-x-3">
-                <Shield className="h-6 w-6 text-red-500" />
+                <Shield className="h-6 w-6 text-red-600" />
                 <div>
-                  <p className="font-semibold text-white">2-Year Warranty</p>
-                  <p className="text-sm text-gray-400">Manufacturer warranty</p>
+                  <p className="font-semibold text-gray-900">2-Year Warranty</p>
+                  <p className="text-sm text-gray-600">Manufacturer warranty</p>
                 </div>
               </div>
             </div>
@@ -219,16 +229,16 @@ const ProductDetails = () => {
         </div>
 
         {/* Product Details Tabs */}
-        <div className="bg-gray-900 rounded-xl border border-red-500/20 animate-fade-in">
-          <div className="flex border-b border-red-500/20">
+        <div className="bg-white rounded-xl border border-red-200 shadow-lg animate-fade-in">
+          <div className="flex border-b border-red-200">
             {['description', 'specifications', 'reviews'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`px-6 py-4 font-semibold capitalize transition-colors ${
                   activeTab === tab
-                    ? 'text-red-500 border-b-2 border-red-500'
-                    : 'text-gray-400 hover:text-white'
+                    ? 'text-red-600 border-b-2 border-red-600'
+                    : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
                 {tab}
@@ -239,14 +249,14 @@ const ProductDetails = () => {
           <div className="p-6">
             {activeTab === 'description' && (
               <div className="space-y-4">
-                <p className="text-gray-300 leading-relaxed">{product.description}</p>
+                <p className="text-gray-700 leading-relaxed">{product.description}</p>
                 <div>
-                  <h4 className="font-semibold text-white mb-3">Key Features:</h4>
+                  <h4 className="font-semibold text-gray-900 mb-3">Key Features:</h4>
                   <ul className="space-y-2">
                     {product.features.map((feature, index) => (
                       <li key={index} className="flex items-center space-x-2">
                         <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                        <span className="text-gray-300">{feature}</span>
+                        <span className="text-gray-700">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -257,9 +267,9 @@ const ProductDetails = () => {
             {activeTab === 'specifications' && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {Object.entries(product.specifications).map(([key, value]) => (
-                  <div key={key} className="flex justify-between items-center py-2 border-b border-gray-800">
-                    <span className="font-semibold text-white">{key}:</span>
-                    <span className="text-gray-300">{value}</span>
+                  <div key={key} className="flex justify-between items-center py-2 border-b border-gray-200">
+                    <span className="font-semibold text-gray-900">{key}:</span>
+                    <span className="text-gray-700">{value}</span>
                   </div>
                 ))}
               </div>
@@ -268,20 +278,60 @@ const ProductDetails = () => {
             {activeTab === 'reviews' && (
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-xl font-semibold text-white">Customer Reviews</h4>
-                  <button className="btn-primary">Write a Review</button>
+                  <h4 className="text-xl font-semibold text-gray-900">Customer Reviews</h4>
                 </div>
+
+                {/* Write Review Section */}
+                <div className="bg-red-50 p-4 rounded-lg border border-red-200">
+                  <h5 className="font-semibold text-gray-900 mb-3">Write a Review</h5>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+                      <div className="flex items-center space-x-1">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <button
+                            key={star}
+                            onClick={() => setReviewRating(star)}
+                            className={`h-6 w-6 ${
+                              star <= reviewRating ? 'text-yellow-400 fill-current' : 'text-gray-300'
+                            }`}
+                          >
+                            <Star className="h-6 w-6" />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Your Review</label>
+                      <textarea
+                        value={reviewText}
+                        onChange={(e) => setReviewText(e.target.value)}
+                        className="w-full p-3 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                        rows={4}
+                        placeholder="Share your experience with this product..."
+                      />
+                    </div>
+                    <button
+                      onClick={handleSubmitReview}
+                      className="btn-primary"
+                    >
+                      Submit Review
+                    </button>
+                  </div>
+                </div>
+
+                {/* Existing Reviews */}
                 <div className="space-y-4">
                   {reviews.map((review) => (
-                    <div key={review.id} className="bg-black p-4 rounded-lg border border-red-500/20">
+                    <div key={review.id} className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center space-x-2">
-                          <span className="font-semibold text-white">{review.user}</span>
+                          <span className="font-semibold text-gray-900">{review.user}</span>
                           {review.verified && (
                             <span className="bg-green-600 text-white text-xs px-2 py-1 rounded-full">Verified</span>
                           )}
                         </div>
-                        <span className="text-gray-400 text-sm">{review.date}</span>
+                        <span className="text-gray-500 text-sm">{review.date}</span>
                       </div>
                       <div className="flex items-center mb-2">
                         {[...Array(5)].map((_, i) => (
@@ -290,12 +340,12 @@ const ProductDetails = () => {
                             className={`h-4 w-4 ${
                               i < review.rating 
                                 ? 'text-yellow-400 fill-current' 
-                                : 'text-gray-600'
+                                : 'text-gray-300'
                             }`} 
                           />
                         ))}
                       </div>
-                      <p className="text-gray-300">{review.comment}</p>
+                      <p className="text-gray-700">{review.comment}</p>
                     </div>
                   ))}
                 </div>

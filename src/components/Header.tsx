@@ -12,8 +12,18 @@ const Header = () => {
   const [isCustomerCareOpen, setIsCustomerCareOpen] = useState(false);
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
   const { getTotalItems } = useCart();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      navigate(`/marketplace?search=${encodeURIComponent(searchTerm.trim())}`);
+      setSearchTerm('');
+      setIsMobileMenuOpen(false);
+    }
+  };
 
   return (
     <>
@@ -27,7 +37,7 @@ const Header = () => {
           <div className="flex items-center justify-between py-4">
             {/* 3D Logo */}
             <div 
-              className="logo-3d gradient-text animate-bounce-3d"
+              className="logo-3d gradient-text animate-bounce-3d cursor-pointer"
               data-text="ShopHub"
               onClick={() => navigate('/')}
             >
@@ -36,14 +46,21 @@ const Header = () => {
 
             {/* Search Bar - Desktop */}
             <div className="hidden md:flex flex-1 max-w-2xl mx-8">
-              <div className="relative w-full">
+              <form onSubmit={handleSearch} className="relative w-full">
                 <input
                   type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Search products..."
                   className="w-full px-4 py-3 pl-12 bg-red-50 text-gray-900 border-2 border-red-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300"
                 />
-                <Search className="absolute left-4 top-3.5 h-5 w-5 text-red-400" />
-              </div>
+                <button
+                  type="submit"
+                  className="absolute left-4 top-3.5 h-5 w-5 text-red-400 hover:text-red-600 transition-colors"
+                >
+                  <Search className="h-5 w-5" />
+                </button>
+              </form>
             </div>
 
             {/* Right Actions */}
@@ -100,30 +117,46 @@ const Header = () => {
           {isMobileMenuOpen && (
             <div className="md:hidden border-t border-red-200 py-4 animate-slide-3d">
               <div className="flex flex-col space-y-4">
-                <div className="relative">
+                <form onSubmit={handleSearch} className="relative">
                   <input
                     type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="Search products..."
                     className="w-full px-4 py-3 pl-12 bg-red-50 text-gray-900 border-2 border-red-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500"
                   />
-                  <Search className="absolute left-4 top-3.5 h-5 w-5 text-red-400" />
-                </div>
+                  <button
+                    type="submit"
+                    className="absolute left-4 top-3.5 h-5 w-5 text-red-400"
+                  >
+                    <Search className="h-5 w-5" />
+                  </button>
+                </form>
                 <button 
-                  onClick={() => setIsCustomerCareOpen(true)}
+                  onClick={() => {
+                    setIsCustomerCareOpen(true);
+                    setIsMobileMenuOpen(false);
+                  }}
                   className="flex items-center space-x-2 text-gray-700 hover:text-red-600 p-2 rounded-lg hover:bg-red-50 transition-all"
                 >
                   <Phone className="h-5 w-5" />
                   <span>Customer Care</span>
                 </button>
                 <button 
-                  onClick={() => setIsAboutModalOpen(true)}
+                  onClick={() => {
+                    setIsAboutModalOpen(true);
+                    setIsMobileMenuOpen(false);
+                  }}
                   className="flex items-center space-x-2 text-gray-700 hover:text-red-600 p-2 rounded-lg hover:bg-red-50 transition-all"
                 >
                   <Info className="h-5 w-5" />
                   <span>About Us</span>
                 </button>
                 <button 
-                  onClick={() => setIsAuthModalOpen(true)}
+                  onClick={() => {
+                    setIsAuthModalOpen(true);
+                    setIsMobileMenuOpen(false);
+                  }}
                   className="flex items-center space-x-2 text-gray-700 hover:text-red-600 p-2 rounded-lg hover:bg-red-50 transition-all"
                 >
                   <User className="h-5 w-5" />
