@@ -32,7 +32,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   };
 
   return (
-    <div className="product-card animate-float-in">
+    <div className="product-card animate-float-in group">
       <div className="relative" onClick={() => navigate(`/product/${product.id}`)}>
         <img 
           src={`https://images.unsplash.com/${product.image}?w=400&h=300&fit=crop`}
@@ -84,7 +84,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <span className="text-sm text-gray-500 ml-2">({product.reviews})</span>
         </div>
 
-        {/* Price */}
+        {/* Price and Add to Cart */}
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <span className="text-lg font-bold text-gray-900">
@@ -99,9 +99,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           
           <button 
             onClick={handleAddToCart}
-            className="bg-red-600 text-white p-2 rounded-lg hover:bg-red-700 transition-all duration-300 hover:scale-110 transform hover:shadow-lg"
+            className="flex items-center space-x-2 bg-red-600 text-white px-3 py-2 rounded-lg hover:bg-red-700 transition-all duration-300 hover:scale-105 transform hover:shadow-lg text-sm font-medium"
           >
             <ShoppingCart className="h-4 w-4" />
+            <span className="hidden sm:inline">Add to Cart</span>
+            <span className="sm:hidden">Add</span>
           </button>
         </div>
       </div>

@@ -3,6 +3,7 @@ import { ArrowRight, Star, Truck, Shield, Clock, Users, Sparkles } from 'lucide-
 import { useNavigate } from 'react-router-dom';
 import ProductCarousel from '../components/ProductCarousel';
 import PreLaunchNotification from '../components/PreLaunchNotification';
+import CategoryNavigation from '../components/CategoryNavigation';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -173,8 +174,8 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section with Enhanced Background Animation */}
-      <section className="relative gradient-bg-dark text-white py-20 overflow-hidden">
+      {/* Offer Banner Hero Section */}
+      <section className="relative bg-gradient-to-r from-red-600 via-red-700 to-red-800 text-white py-20 overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-r from-red-900 via-red-700 to-red-600"></div>
           {/* Multiple animated background elements */}
@@ -191,11 +192,16 @@ const HomePage = () => {
         <div className="relative container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-bounce-3d">
-              Shop the <span className="text-white">Future</span>
+              🔥 <span className="text-white">MEGA SALE</span> 🔥
             </h1>
-            <p className="text-xl md:text-2xl mb-8 opacity-90 animate-float-in">
-              Discover amazing products with unbeatable prices and lightning-fast delivery
+            <p className="text-xl md:text-2xl mb-6 opacity-90 animate-float-in">
+              Up to 70% OFF on Electronics, Fashion & More!
             </p>
+            <div className="flex flex-wrap justify-center gap-4 mb-8 text-lg">
+              <span className="bg-white text-red-600 px-4 py-2 rounded-full font-bold animate-bounce">Electronics 50% OFF</span>
+              <span className="bg-white text-red-600 px-4 py-2 rounded-full font-bold animate-bounce" style={{ animationDelay: '0.2s' }}>Fashion 60% OFF</span>
+              <span className="bg-white text-red-600 px-4 py-2 rounded-full font-bold animate-bounce" style={{ animationDelay: '0.4s' }}>Home 40% OFF</span>
+            </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-3d">
               <button 
                 onClick={() => navigate('/marketplace')}
@@ -207,15 +213,18 @@ const HomePage = () => {
                 onClick={() => navigate('/marketplace')}
                 className="border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-red-600 transition-all duration-300 hover:scale-105 transform"
               >
-                View Offers
+                View All Offers
               </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section - Mobile Friendly Horizontal Scroll */}
-      <section className="py-8 md:py-16 bg-white border-b border-red-100">
+      {/* Category Navigation Section */}
+      <CategoryNavigation />
+
+      {/* Features Section - Responsive Mobile View */}
+      <section className="py-6 md:py-12 bg-white border-b border-red-100">
         <div className="container mx-auto px-4">
           {/* Desktop Grid */}
           <div className="hidden md:grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -249,35 +258,23 @@ const HomePage = () => {
             </div>
           </div>
 
-          {/* Mobile Horizontal Scroll */}
-          <div className="md:hidden features-mobile">
-            <div className="feature-item-mobile text-center feature-card">
-              <div className="bg-gradient-to-r from-red-600 to-red-700 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Truck className="h-6 w-6 text-white" />
+          {/* Mobile Horizontal Layout - Responsive */}
+          <div className="md:hidden">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="text-center bg-red-50 p-3 rounded-lg border border-red-200">
+                <div className="bg-gradient-to-r from-red-600 to-red-700 w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <Truck className="h-5 w-5 text-white" />
+                </div>
+                <h3 className="font-semibold text-sm mb-1 text-gray-900">Free Shipping</h3>
+                <p className="text-xs text-red-600">Orders $50+</p>
               </div>
-              <h3 className="font-semibold text-sm mb-1 text-gray-900">Free Shipping</h3>
-              <p className="text-xs text-red-600">On orders $50+</p>
-            </div>
-            <div className="feature-item-mobile text-center feature-card">
-              <div className="bg-gradient-to-r from-red-600 to-red-700 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Shield className="h-6 w-6 text-white" />
+              <div className="text-center bg-red-50 p-3 rounded-lg border border-red-200">
+                <div className="bg-gradient-to-r from-red-600 to-red-700 w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <Shield className="h-5 w-5 text-white" />
+                </div>
+                <h3 className="font-semibold text-sm mb-1 text-gray-900">30-Day Returns</h3>
+                <p className="text-xs text-red-600">Hassle-free</p>
               </div>
-              <h3 className="font-semibold text-sm mb-1 text-gray-900">30-Day Returns</h3>
-              <p className="text-xs text-red-600">Hassle-free</p>
-            </div>
-            <div className="feature-item-mobile text-center feature-card">
-              <div className="bg-gradient-to-r from-red-600 to-red-700 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Clock className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="font-semibold text-sm mb-1 text-gray-900">Fast Delivery</h3>
-              <p className="text-xs text-red-600">Same-day</p>
-            </div>
-            <div className="feature-item-mobile text-center feature-card">
-              <div className="bg-gradient-to-r from-red-600 to-red-700 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Users className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="font-semibold text-sm mb-1 text-gray-900">24/7 Support</h3>
-              <p className="text-xs text-red-600">Always here</p>
             </div>
           </div>
         </div>
