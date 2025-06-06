@@ -1,14 +1,15 @@
-
 import React, { useState } from 'react';
 import { Search, Filter, Grid, List, Star, Heart } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import { Slider } from '@/components/ui/slider';
+import { useProducts } from '../hooks/useProducts';
 
 const Marketplace = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('featured');
+  const { data: products = [], isLoading, error } = useProducts();
 
   const categories = [
     'All Categories',
@@ -21,18 +22,58 @@ const Marketplace = () => {
     'Automotive'
   ];
 
-  const products = Array.from({ length: 12 }, (_, i) => ({
-    id: i + 1,
-    name: `Product ${i + 1}`,
-    price: Math.floor(Math.random() * 500) + 50,
-    originalPrice: Math.floor(Math.random() * 200) + 600,
-    image: `photo-${['1486312338219-ce68d2c6f44d', '1649972904349-6e44c42644a7', '1531297484001-80022131f5a1'][i % 3]}`,
-    rating: 4 + Math.random(),
-    reviews: Math.floor(Math.random() * 500) + 20,
-    category: categories[Math.floor(Math.random() * categories.length)],
-    isNew: Math.random() > 0.7,
-    isSale: Math.random() > 0.6
-  }));
+  // Filter products based on selected criteria
+  const filteredProducts = products.filter(product => {
+    const matchesCategory = selectedCategory === 'all categories' || 
+                           product.category.toLowerCase() === selectedCategory;
+    const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
+    return matchesCategory && matchesPrice;
+  });
+
+  // Sort products
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    switch (sortBy) {
+      case 'price-low':
+        return a.price - b.price;
+      case 'price-high':
+        return b.price - a.price;
+      case 'rating':
+        const avgRatingA = a.reviews.reduce((sum, r) => sum + r.rating, 0) / a.reviews.length || 0;
+        const avgRatingB = b.reviews.reduce((sum, r) => sum + r.rating, 0) / b.reviews.length || 0;
+        return avgRatingB - avgRatingA;
+      case 'newest':
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      default:
+        return 0;
+    }
+  });
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-red-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading products...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">Error loading products</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="btn-primary"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -129,7 +170,7 @@ const Marketplace = () => {
             {/* Toolbar */}
             <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
               <div className="flex items-center space-x-4">
-                <span className="text-gray-600">Showing 1-12 of 1,234 results</span>
+                <span className="text-gray-600">Showing 1-{sortedProducts.length} of {products.length} results</span>
               </div>
               
               <div className="flex items-center space-x-4">
@@ -166,9 +207,20 @@ const Marketplace = () => {
 
             {/* Products Grid */}
             <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
-              {products.map((product, index) => (
+              {sortedProducts.map((product, index) => (
                 <div key={product.id} style={{ animationDelay: `${index * 0.1}s` }}>
-                  <ProductCard product={product} />
+                  <ProductCard product={{
+                    id: parseInt(product.id),
+                    name: product.name,
+                    price: product.price,
+                    originalPrice: product.offers ? product.price / (1 - product.offers.discountPercentage / 100) : undefined,
+                    image: product.imageUrls[0] || 'photo-1486312338219-ce68d2c6f44d',
+                    rating: product.reviews.length > 0 ? product.reviews.reduce((sum, r) => sum + r.rating, 0) / product.reviews.length : 0,
+                    reviews: product.reviews.length,
+                    category: product.category,
+                    isNew: new Date(product.createdAt) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+                    isSale: !!product.offers
+                  }} />
                 </div>
               ))}
             </div>

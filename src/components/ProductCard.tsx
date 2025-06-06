@@ -31,11 +31,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     console.log('Added to cart:', product);
   };
 
+  // Handle image URL - check if it's already a full URL or needs Unsplash prefix
+  const getImageUrl = (imageUrl: string) => {
+    if (imageUrl.startsWith('http')) {
+      return imageUrl;
+    }
+    return `https://images.unsplash.com/${imageUrl}?w=400&h=300&fit=crop`;
+  };
+
   return (
     <div className="product-card animate-float-in group">
       <div className="relative" onClick={() => navigate(`/product/${product.id}`)}>
         <img 
-          src={`https://images.unsplash.com/${product.image}?w=400&h=300&fit=crop`}
+          src={getImageUrl(product.image)}
           alt={product.name}
           className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
         />
@@ -92,7 +100,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </span>
             {product.originalPrice && (
               <span className="text-sm text-gray-500 line-through">
-                ${product.originalPrice}
+                ${product.originalPrice.toFixed(2)}
               </span>
             )}
           </div>
