@@ -45,7 +45,8 @@ export const useAddOrderItem = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: ordersApi.addItem,
+    mutationFn: ({ orderId, item }: { orderId: string; item: { productId: string; quantity: number; price: number } }) =>
+      ordersApi.addItem(orderId, item),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });
       queryClient.invalidateQueries({ queryKey: ['order', variables.orderId] });
@@ -57,7 +58,8 @@ export const useProcessPayment = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: ordersApi.processPayment,
+    mutationFn: ({ orderId, paymentData }: { orderId: string; paymentData: any }) =>
+      ordersApi.processPayment(orderId, paymentData),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });
       queryClient.invalidateQueries({ queryKey: ['order', variables.orderId] });

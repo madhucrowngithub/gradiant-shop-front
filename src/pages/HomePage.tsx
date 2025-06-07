@@ -4,119 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import ProductCarousel from '../components/ProductCarousel';
 import PreLaunchNotification from '../components/PreLaunchNotification';
 import CategoryNavigation from '../components/CategoryNavigation';
+import { useProducts } from '../hooks/useProducts';
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const { data: products = [], isLoading, error } = useProducts();
 
-  const trendingProducts = [
-    {
-      id: 1,
-      name: "Premium Wireless Headphones",
-      price: 299,
-      originalPrice: 399,
-      image: "photo-1488590528505-98d2b5aba04b",
-      rating: 4.5,
-      reviews: 128,
-      category: "Electronics",
-      isNew: true,
-      isSale: true
-    },
-    {
-      id: 2,
-      name: "Smart Fitness Watch",
-      price: 199,
-      image: "photo-1649972904349-6e44c42644a7",
-      rating: 4.8,
-      reviews: 256,
-      category: "Wearables",
-      isNew: true
-    },
-    {
-      id: 3,
-      name: "Professional Laptop Stand",
-      price: 89,
-      originalPrice: 120,
-      image: "photo-1531297484001-80022131f5a1",
-      rating: 4.6,
-      reviews: 94,
-      category: "Accessories",
-      isSale: true
-    },
-    {
-      id: 4,
-      name: "Ergonomic Office Chair",
-      price: 449,
-      image: "photo-1721322800607-8c38375eef04",
-      rating: 4.7,
-      reviews: 87,
-      category: "Furniture"
-    },
-    {
-      id: 5,
-      name: "Gaming Mechanical Keyboard",
-      price: 159,
-      originalPrice: 199,
-      image: "photo-1486312338219-ce68d2c6f44d",
-      rating: 4.9,
-      reviews: 342,
-      category: "Gaming",
-      isSale: true
-    },
-    {
-      id: 6,
-      name: "4K Webcam Pro",
-      price: 89,
-      image: "photo-1526374965328-7f61d4dc18c5",
-      rating: 4.4,
-      reviews: 156,
-      category: "Electronics",
-      isNew: true
-    }
-  ];
-
-  const featuredProducts = [
-    {
-      id: 7,
-      name: "Smart Home Hub",
-      price: 249,
-      originalPrice: 299,
-      image: "photo-1581091226825-a6a2a5aee158",
-      rating: 4.6,
-      reviews: 89,
-      category: "Smart Home",
-      isSale: true
-    },
-    {
-      id: 8,
-      name: "Wireless Charging Pad",
-      price: 49,
-      image: "photo-1649972904349-6e44c42644a7",
-      rating: 4.3,
-      reviews: 234,
-      category: "Accessories"
-    },
-    {
-      id: 9,
-      name: "Bluetooth Speaker",
-      price: 79,
-      originalPrice: 99,
-      image: "photo-1488590528505-98d2b5aba04b",
-      rating: 4.7,
-      reviews: 167,
-      category: "Audio",
-      isSale: true
-    },
-    {
-      id: 10,
-      name: "Smart Light Bulbs (4-Pack)",
-      price: 69,
-      image: "photo-1531297484001-80022131f5a1",
-      rating: 4.5,
-      reviews: 203,
-      category: "Smart Home",
-      isNew: true
-    }
-  ];
+  // Filter products for different sections
+  const trendingProducts = products.slice(0, 6);
+  const featuredProducts = products.slice(6, 10);
+  const newLaunchProducts = products.slice(10, 14);
 
   const offerCategories = [
     { name: "Electronics", discount: "Up to 50% OFF", image: "photo-1526374965328-7f61d4dc18c5" },
@@ -125,52 +22,26 @@ const HomePage = () => {
     { name: "Sports", discount: "25% OFF", image: "photo-1486312338219-ce68d2c6f44d" }
   ];
 
-  const newLaunchProducts = [
-    {
-      id: 11,
-      name: "AI-Powered Smart Speaker",
-      price: 199,
-      originalPrice: 249,
-      image: "photo-1589003077984-894e133dabab",
-      rating: 4.9,
-      reviews: 45,
-      category: "Smart Home",
-      isNew: true,
-      isSale: true
-    },
-    {
-      id: 12,
-      name: "Ultra-Fast Wireless Charger",
-      price: 79,
-      image: "photo-1558618666-fcd25c85cd64",
-      rating: 4.7,
-      reviews: 67,
-      category: "Accessories",
-      isNew: true
-    },
-    {
-      id: 13,
-      name: "Smart Fitness Tracker Pro",
-      price: 129,
-      originalPrice: 159,
-      image: "photo-1575311373937-040b8e1fd5b6",
-      rating: 4.8,
-      reviews: 89,
-      category: "Wearables",
-      isNew: true,
-      isSale: true
-    },
-    {
-      id: 14,
-      name: "Noise-Cancelling Earbuds",
-      price: 149,
-      image: "photo-1606220945770-b5b6c2c55bf1",
-      rating: 4.6,
-      reviews: 123,
-      category: "Audio",
-      isNew: true
-    }
-  ];
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-red-600 mx-auto"></div>
+          <p className="mt-4 text-red-600 text-lg">Loading products...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 text-lg">Error loading products. Please try again later.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -281,56 +152,62 @@ const HomePage = () => {
       </section>
 
       {/* New Launches Section */}
-      <section className="py-16 bg-gradient-to-br from-red-50 to-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <div className="flex items-center justify-center mb-4">
-              <Sparkles className="h-8 w-8 text-red-600 mr-3 animate-rotate-3d" />
-              <h2 className="text-4xl font-bold gradient-text animate-bounce-3d">
-                New Launches
-              </h2>
-              <Sparkles className="h-8 w-8 text-red-600 ml-3 animate-rotate-3d" />
+      {newLaunchProducts.length > 0 && (
+        <section className="py-16 bg-gradient-to-br from-red-50 to-white">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <div className="flex items-center justify-center mb-4">
+                <Sparkles className="h-8 w-8 text-red-600 mr-3 animate-rotate-3d" />
+                <h2 className="text-4xl font-bold gradient-text animate-bounce-3d">
+                  New Launches
+                </h2>
+                <Sparkles className="h-8 w-8 text-red-600 ml-3 animate-rotate-3d" />
+              </div>
+              <p className="text-red-600 text-lg font-medium">Fresh arrivals just for you!</p>
             </div>
-            <p className="text-red-600 text-lg font-medium">Fresh arrivals just for you!</p>
+            <ProductCarousel products={newLaunchProducts} title="" />
+            
+            <div className="text-center mt-8">
+              <button 
+                onClick={() => navigate('/marketplace')}
+                className="btn-primary text-lg px-8 py-4"
+              >
+                Explore All New Products
+              </button>
+            </div>
           </div>
-          <ProductCarousel products={newLaunchProducts} title="" />
-          
-          <div className="text-center mt-8">
-            <button 
-              onClick={() => navigate('/marketplace')}
-              className="btn-primary text-lg px-8 py-4"
-            >
-              Explore All New Products
-            </button>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Trending Products Carousel */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <ProductCarousel products={trendingProducts} title="Trending Products" />
-          
-          <div className="text-center mt-8">
-            <button 
-              onClick={() => navigate('/marketplace')}
-              className="btn-primary"
-            >
-              View All Products
-            </button>
+      {trendingProducts.length > 0 && (
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <ProductCarousel products={trendingProducts} title="Trending Products" />
+            
+            <div className="text-center mt-8">
+              <button 
+                onClick={() => navigate('/marketplace')}
+                className="btn-primary"
+              >
+                View All Products
+              </button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Pre-Launch Notification Section */}
       <PreLaunchNotification />
 
       {/* Featured Products Carousel */}
-      <section className="py-16 bg-red-50">
-        <div className="container mx-auto px-4">
-          <ProductCarousel products={featuredProducts} title="Featured Collection" />
-        </div>
-      </section>
+      {featuredProducts.length > 0 && (
+        <section className="py-16 bg-red-50">
+          <div className="container mx-auto px-4">
+            <ProductCarousel products={featuredProducts} title="Featured Collection" />
+          </div>
+        </section>
+      )}
 
       {/* Offer Section */}
       <section className="py-16 bg-gradient-to-br from-white via-red-50 to-red-100">
