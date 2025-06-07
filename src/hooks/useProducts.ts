@@ -1,6 +1,6 @@
 
 import { useQuery } from '@tanstack/react-query';
-import { productsApi } from '../services/api';
+import { mockProductsApi } from '../services/mockApi';
 
 export const useProducts = () => {
   console.log('useProducts hook called');
@@ -8,10 +8,10 @@ export const useProducts = () => {
   return useQuery({
     queryKey: ['products'],
     queryFn: async () => {
-      console.log('Fetching products from API...');
+      console.log('Fetching products from Mock API...');
       try {
-        const result = await productsApi.getAll();
-        console.log('Products API response:', result);
+        const result = await mockProductsApi.getAll();
+        console.log('Mock API response:', result);
         return result;
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -24,7 +24,7 @@ export const useProducts = () => {
 export const useProduct = (id: string) => {
   return useQuery({
     queryKey: ['product', id],
-    queryFn: () => productsApi.getById(id),
+    queryFn: () => mockProductsApi.getById(id),
     enabled: !!id,
   });
 };
