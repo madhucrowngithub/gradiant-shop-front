@@ -3,12 +3,20 @@ import React from 'react';
 import { useProducts } from '../hooks/useProducts';
 import ProductCarousel from '../components/ProductCarousel';
 import CategoryNavigation from '../components/CategoryNavigation';
+import PreLaunchNotification from '../components/PreLaunchNotification';
 import { Loader2 } from 'lucide-react';
 
 const HomePage = () => {
+  console.log('HomePage component rendering...');
+  
   const { data: products, isLoading, error } = useProducts();
+  
+  console.log('Products data:', products);
+  console.log('Is loading:', isLoading);
+  console.log('Error:', error);
 
   if (isLoading) {
+    console.log('Showing loading state');
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-red-600" />
@@ -17,11 +25,13 @@ const HomePage = () => {
   }
 
   if (error) {
+    console.log('Showing error state:', error);
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Error loading products</h1>
           <p className="text-gray-600">Please try again later</p>
+          <p className="text-sm text-red-500 mt-2">Error: {error?.message || 'Unknown error'}</p>
         </div>
       </div>
     );
@@ -30,6 +40,10 @@ const HomePage = () => {
   const featuredProducts = products?.slice(0, 8) || [];
   const saleProducts = products?.filter(p => p.offers) || [];
   const newProducts = products?.filter(p => new Date(p.createdAt) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)) || [];
+
+  console.log('Featured products:', featuredProducts.length);
+  console.log('Sale products:', saleProducts.length);
+  console.log('New products:', newProducts.length);
 
   return (
     <div className="min-h-screen bg-white">
@@ -84,6 +98,9 @@ const HomePage = () => {
           />
         </section>
       )}
+
+      {/* Pre-launch notification section */}
+      <PreLaunchNotification />
     </div>
   );
 };

@@ -1,11 +1,23 @@
 
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { productsApi, Product } from '../services/api';
+import { useQuery } from '@tanstack/react-query';
+import { productsApi } from '../services/api';
 
 export const useProducts = () => {
+  console.log('useProducts hook called');
+  
   return useQuery({
     queryKey: ['products'],
-    queryFn: productsApi.getAll,
+    queryFn: async () => {
+      console.log('Fetching products from API...');
+      try {
+        const result = await productsApi.getAll();
+        console.log('Products API response:', result);
+        return result;
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        throw error;
+      }
+    },
   });
 };
 
@@ -14,40 +26,5 @@ export const useProduct = (id: string) => {
     queryKey: ['product', id],
     queryFn: () => productsApi.getById(id),
     enabled: !!id,
-  });
-};
-
-export const useCreateProduct = () => {
-  const queryClient = useQueryClient();
-  
-  return useMutation({
-    mutationFn: productsApi.create,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['products'] });
-    },
-  });
-};
-
-export const useUpdateProduct = () => {
-  const queryClient = useQueryClient();
-  
-  return useMutation({
-    mutationFn: ({ id, product }: { id: string; product: Partial<Product> }) =>
-      productsApi.update(id, product),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['products'] });
-      queryClient.invalidateQueries({ queryKey: ['product', data.id] });
-    },
-  });
-};
-
-export const useDeleteProduct = () => {
-  const queryClient = useQueryClient();
-  
-  return useMutation({
-    mutationFn: productsApi.delete,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['products'] });
-    },
   });
 };
